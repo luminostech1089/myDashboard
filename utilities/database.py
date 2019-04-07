@@ -11,11 +11,11 @@ class DB:
         print "closing database connection"
         self.conn.close()
 
-    def execute(self, query):
-        print "Executing a query {}".format(query)
+    def execute(self, *args, **kwargs):
         try:
-            self.cursor.execute(query)
+            output = self.cursor.execute(*args, **kwargs)
             self.conn.commit()
+            return output
         except Exception as err:
             print "Failed to execute query due to error - {}".format(err)
             self.close()
@@ -26,14 +26,15 @@ def create_default_user():
     db = DB()
     user = "root"
     pwd = "root"
-    usersTable = '''CREATE TABLE USERS
-             (ID INT PRIMARY KEY     NOT NULL,
-              USER           TEXT    NOT NULL,
-              PASSWORD       TEXT     NOT NULL
-             );'''
-    addUser = "INSERT INTO USERS (ID, USER, PASSWORD) VALUES (1, {} {}".format(user, pwd)
+    usersTable = """CREATE TABLE IF NOT EXISTS USERS
+             (id integer PRIMARY KEY NOT NULL,
+              user test NOT NULL,
+              pwd text NOT NULL
+             );"""
+    addUser = "INSERT INTO USERS(id, user, pwd) VALUES (?, ?, ?)"
     db.execute(usersTable)
-    db.execute(addUser)
+    userdata = (1, 'root', 'root')
+    db.execute(addUser, userdata)
     db.close()
 
 
@@ -41,8 +42,10 @@ def create_default_user():
 
 if __name__  == "__main__":
     db = DB()
+    # db.execute("DROP TABLE USERS;")
     #create_default_user()
-    op = db.execute("SELECT ID, USER, PASSWORD from USERS")
-    print op
+    op = db.execute("SELECT * FROM USERS")
+    for data in op:
+        print data
     db.close()
 

@@ -1,4 +1,4 @@
-import logging
+from utilities.logger import Logger
 from flask import Flask, render_template,request
 
 app = Flask(__name__)
@@ -29,4 +29,6 @@ def tables():
     return render_template('tables.html')
 
 if __name__ == "__main__":
+    logger = Logger()
+    logger.set_basic_config()
     app.run(debug=True)
