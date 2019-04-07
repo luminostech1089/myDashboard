@@ -28,6 +28,8 @@ def charts():
 def tables():
     return render_template('tables.html')
 
+
+
 if __name__ == "__main__":
     logger = Logger()
     logger.set_basic_config()
