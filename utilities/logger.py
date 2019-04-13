@@ -33,3 +33,7 @@ class Logger(object):
         except Exception as err:
             logging.exception("Exception is raised: " + str(err.args))
             raise
+
+class ConsoleLogger:
+    def __init__(self):
+        logging.basicConfig(level=logging.DEBUG)

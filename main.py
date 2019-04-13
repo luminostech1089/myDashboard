@@ -8,9 +8,13 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'POST':
+        print request.form
+        return render_template('index.html')
+    else:
+        return render_template('login.html')
 
 @app.route('/register')
 def register():

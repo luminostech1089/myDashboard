@@ -1,3 +1,4 @@
 $(document).ready(function(){
-    $('#loginError').text("Login Error!")
+    $('#loginError').hide();
+    console.log("Test")
 });
