@@ -49,7 +49,10 @@
             </div>
           </div>
           <div class="form-group">
-          <span id="loginError" class="errMsg"></span>
+            {% if error %}
+            <span class=errMsg><strong>Error:</strong> {{ error }}</span>
+            {% endif %}
+          <!--<span id="loginError" class="errMsg"></span>-->
           </div>
           <div class="form-group">
           <button type="submit" value="submit" class="btn btn-primary btn-block">Login</button>

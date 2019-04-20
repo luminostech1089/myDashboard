@@ -1,5 +1,7 @@
+import os
 import sqlite3
 import logging
+import constants
 
 
 class DBError(Exception):
@@ -7,20 +9,28 @@ class DBError(Exception):
 
 class DB:
     def __init__(self, timeout=600):
-        self.__databaseName = 'database.db'
+        self.__databaseName = os.path.join(constants.UTILS_DIR, 'database.db')
+        self.timeout = timeout
+        self.conn = None
+        self.cursor = None
+
+    def connect(self):
         logging.debug("Connecting to database")
-        self.conn = sqlite3.connect(self.__databaseName, timeout=timeout)
+        self.conn = sqlite3.connect(self.__databaseName, timeout=self.timeout)
         self.cursor = self.conn.cursor()
 
     def close(self):
         logging.debug("Closing database connection")
-        self.conn.close()
+        if self.conn:
+            self.conn.close()
 
     @property
     def db(self):
         return self.__databaseName
 
     def execute(self, *args, **kwargs):
+        if not self.cursor:
+            self.connect()
         try:
             logging.debug("DB query {}".format(args))
             if kwargs:
@@ -30,7 +40,8 @@ class DB:
             self.conn.commit()
             return output
         except Exception as err:
-            logging.debug("Failed to execute DB query. Error - {}".format(err), exc_info=True)
+            print "**error-{}".format(err)
+            logging.info("Failed to execute DB query. Error - {}".format(err), exc_info=True)
             raise DBError("Error occurred while executing DB query")
 
 
@@ -60,9 +71,7 @@ if __name__  == "__main__":
     #db.execute("DROP TABLE USERS;")
     #create_default_user()
     op = db.execute("SELECT * FROM USERS WHERE user=='root'")
-    print op
-    for data in op:
-        print data
+    print op.fetchone()
     db.close()
 
 

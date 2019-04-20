@@ -18,7 +18,7 @@ class Logger(object):
     def set_basic_config(self):
         try:
             multiple_stream_handler = True
-            loglevel = "DEBUG"
+            loglevel = logging.DEBUG
             formatter = "%(asctime)s [%(module)s]:[%(funcName)s]:%(lineno)d [%(levelname)s] | %(message)s"
             logging.basicConfig(filename=self.logfile, disable_existing_loggers=False, filemode='a',
                                 format=formatter, datefmt='%Y-%m-%d %H:%M:%S', level=loglevel)

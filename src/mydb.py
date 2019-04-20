@@ -7,6 +7,9 @@ class AppDb:
     def __init__(self):
         self.__db = DB()
 
+    def connect(self):
+        self.__db.connect()
+
     def createDefaultUser(self):
         createTableQ = """CREATE TABLE USERS(id INTEGER PRIMARY KEY AUTOINCREMENT,
                           user TEXT NOT NULL,
